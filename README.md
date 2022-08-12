@@ -22,4 +22,5 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
-* curl --header "Content-Type: application/json" --request POST --data '{"author" : "James", "title" : "a book"}' http://localhost:3000/api/v1/books -v
+* curl --header "Content-Type: application/json" --request POST --data '{"author" : "James", "title" : "a book"}' http://localhost:3000/api/v1/books -
+* curl http://localhost:3000/api/v1/books

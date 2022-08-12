@@ -2,7 +2,8 @@ module Api
   module V1
     class BooksController < ApplicationController
       def index
-        render json: Book.all
+        books = Book.all
+        render json: BooksRepresenter.new(books).as_json
       end
 
       def create
@@ -29,3 +30,7 @@ module Api
     end
   end
 end
+
+# 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
+# rails g migration add_author_to_books author:references
+# Book.select {|book| book.author_id.nil?}.map(&:destroy!)
