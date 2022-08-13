@@ -10,26 +10,26 @@
 Book.create([
   { first_name: 'Book title 1',
     last_name: 'Book author 1',
-    age: 10
+    age: 10,
   },
   { title: 'Article title 2',
     last_name: 'Article author 2',
-    age: 10
+    age: 10,
   },
   { title: 'Article title 3',
     last_name: 'Article author 3',
-    age: 10
+    age: 10,
   }
 ])
 
 Book.create([
   { title: 'Book title 1',
-    author_id: 1
+    author_id: 1,
   },
   { title: 'Article title 2',
-    author_id: 2
+    author_id: 2,
   },
   { title: 'Article title 3',
-    author_id: 3
+    author_id: 3,
   }
 ])
