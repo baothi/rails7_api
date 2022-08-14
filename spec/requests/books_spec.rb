@@ -25,13 +25,13 @@ RSpec.describe "Books", type: :request do
         expect(response_body).to eq(
           [
             {
-              'id' => 1,
+              'id' => 2,
               'title' => '1984',
               'author_name' => 'George Orwell',
               'author_age' => 46
             },
             {
-              'id' => 2,
+              'id' => 3,
               'title' => 'The Time Machine',
               'author_name' => 'H.G Wells',
               'author_age' => 78
@@ -49,7 +49,7 @@ RSpec.describe "Books", type: :request do
         expect(response_body).to eq(
           [
             {
-              'id' => 3,
+              'id' => 4,
               'title' => '1984',
               'author_name' => 'George Orwell',
               'author_age' => 46
@@ -67,7 +67,7 @@ RSpec.describe "Books", type: :request do
         expect(response_body).to eq(
           [
             {
-              'id' => 6,
+              'id' => 7,
               'title' => 'The Time Machine',
               'author_name' => 'H.G Wells',
               'author_age' => 78
@@ -80,37 +80,42 @@ RSpec.describe "Books", type: :request do
     
     describe 'POST /books' do
       # let!(:author) {create :author}
+      let!(:user) {FactoryBot.create(:user, password: 'Password1')}
       it 'create a new book' do
         expect {
           post '/api/v1/books', params: { 
             book: {title: 'The Martian'},
             author: {first_name: 'Andy', last_name: 'Weir', age: '48'} 
-          }, headers: { "Authorization" => "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMSJ9.M1vu6qDej7HzuSxcfbE6KAMekNUXB3EWtxwS0pg4UGg" }
+          }, headers: { "Authorization" => "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyfQ.eU5RmofDjsTBkmYFZmccyBoKtLS6Rqebe1wnHDtyzto" }
         }.to change { Book.count }.from(0).to(1)
         # debugger
         expect(response).to have_http_status(:created)
         expect(Author.count).to eq(1)
         expect(response_body).to eq(
           {
-            'id' => 7,
+            'id' => 8,
             'title' => 'The Martian',
             'author_name' => 'Andy Weir',
             'author_age' => 48
           }
         )
       end
+
     end
   
     describe 'DELETE /books/:id' do
       # let!(:book) { FactoryBot.create(:book, title: '1984', author: 'George Orwell') }
       let!(:book) { FactoryBot.create(:book, title: '1984', author: first_author) }
+      let!(:user) {FactoryBot.create(:user, password: 'Password1')}
+
       DatabaseCleaner.clean_with(:truncation)
       # let!(:book) {create :book}
   
       it 'deletes a book' do
         # debugger
         expect {
-          delete "/api/v1/books/#{book.id}"
+          delete "/api/v1/books/#{book.id}", 
+          headers: { "Authorization" => "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyfQ.eU5RmofDjsTBkmYFZmccyBoKtLS6Rqebe1wnHDtyzto" }
         }.to change { Book.count }.from(1).to(0)
   
         expect(response).to have_http_status(:no_content)

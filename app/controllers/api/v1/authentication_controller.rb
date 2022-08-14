@@ -12,9 +12,9 @@ module Api
         
         # user = User.find_by(username: params.require(:username))
         raise AuthenticationError unless user.authenticate(params.require(:password))
-        token = AuthenticationTokenService.call(user.id)
+        token = AuthenticationTokenService.encode(user.id)
         
-        token = AuthenticationTokenService.call(user.id)
+        token = AuthenticationTokenService.encode(user.id)
 
         render json: { token: token }, status: :created
       end

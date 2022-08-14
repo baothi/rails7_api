@@ -16,6 +16,7 @@ module Api
         author = Author.find_or_create_by(author_params)
         book = Book.new(book_params.merge(author_id: author.id))
         UpdateSkuJob.perform_later(book_params[:title])
+        debugger
 
         if book.save
           # render json: book, status: :created
@@ -35,10 +36,11 @@ module Api
 
       def authenticate_user
         # Authorization: Bearer <token>
+        # debugger
         token, _options = token_and_options(request)
         user_id = AuthenticationTokenService.decode(token)
         User.find(user_id)
-      rescue ActiveRecord::RecordNotFound
+      rescue ActiveRecord::RecordNotFound, JWT::DecodeError
         render status: :unauthorized
       end
 
