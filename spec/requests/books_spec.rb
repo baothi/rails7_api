@@ -25,13 +25,13 @@ RSpec.describe "Books", type: :request do
         expect(response_body).to eq(
           [
             {
-              'id' => 2,
+              'id' => 1,
               'title' => '1984',
               'author_name' => 'George Orwell',
               'author_age' => 46
             },
             {
-              'id' => 3,
+              'id' => 2,
               'title' => 'The Time Machine',
               'author_name' => 'H.G Wells',
               'author_age' => 78
@@ -49,7 +49,7 @@ RSpec.describe "Books", type: :request do
         expect(response_body).to eq(
           [
             {
-              'id' => 4,
+              'id' => 3,
               'title' => '1984',
               'author_name' => 'George Orwell',
               'author_age' => 46
@@ -67,7 +67,7 @@ RSpec.describe "Books", type: :request do
         expect(response_body).to eq(
           [
             {
-              'id' => 7,
+              'id' => 6,
               'title' => 'The Time Machine',
               'author_name' => 'H.G Wells',
               'author_age' => 78
@@ -85,14 +85,14 @@ RSpec.describe "Books", type: :request do
           post '/api/v1/books', params: { 
             book: {title: 'The Martian'},
             author: {first_name: 'Andy', last_name: 'Weir', age: '48'} 
-          }
+          }, headers: { "Authorization" => "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMSJ9.M1vu6qDej7HzuSxcfbE6KAMekNUXB3EWtxwS0pg4UGg" }
         }.to change { Book.count }.from(0).to(1)
         # debugger
         expect(response).to have_http_status(:created)
         expect(Author.count).to eq(1)
         expect(response_body).to eq(
           {
-            'id' => 8,
+            'id' => 7,
             'title' => 'The Martian',
             'author_name' => 'Andy Weir',
             'author_age' => 48
