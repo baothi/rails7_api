@@ -4,18 +4,17 @@ RSpec.describe "Books", type: :request do
 
   
   describe 'Book API' do
-    after(:all) do
-      DatabaseCleaner.clean_with(:truncation)
-    end
+    # after(:all) do
+    #   DatabaseCleaner.clean_with(:truncation)
+    # end
     let(:first_author) { FactoryBot.create(:author, first_name: 'George', last_name: 'Orwell', age: 46) }
     let(:second_author) { FactoryBot.create(:author, first_name: 'H.G', last_name: 'Wells', age: 78) }
     
-    before do
-       FactoryBot.create(:book, title: '1984', author: first_author)
-       FactoryBot.create(:book, title: 'The Time Machine', author: second_author)
-    end
-   
     describe 'GET /books' do
+      before do
+         FactoryBot.create(:book, title: '1984', author: first_author)
+         FactoryBot.create(:book, title: 'The Time Machine', author: second_author)
+      end
       it "returns all books" do
         # create_list :book, 2
         get '/api/v1/books'
@@ -26,13 +25,13 @@ RSpec.describe "Books", type: :request do
         expect(response_body).to eq(
           [
             {
-              'id' => 1,
+              'id' => 2,
               'title' => '1984',
               'author_name' => 'George Orwell',
               'author_age' => 46
             },
             {
-              'id' => 2,
+              'id' => 3,
               'title' => 'The Time Machine',
               'author_name' => 'H.G Wells',
               'author_age' => 78
@@ -50,7 +49,7 @@ RSpec.describe "Books", type: :request do
         expect(response_body).to eq(
           [
             {
-              'id' => 1,
+              'id' => 4,
               'title' => '1984',
               'author_name' => 'George Orwell',
               'author_age' => 46
@@ -68,7 +67,7 @@ RSpec.describe "Books", type: :request do
         expect(response_body).to eq(
           [
             {
-              'id' => 2,
+              'id' => 7,
               'title' => 'The Time Machine',
               'author_name' => 'H.G Wells',
               'author_age' => 78
@@ -91,14 +90,14 @@ RSpec.describe "Books", type: :request do
         # debugger
         expect(response).to have_http_status(:created)
         expect(Author.count).to eq(1)
-        # expect(response_body).to eq(
-        #   {
-        #     'id' => 1,
-        #     'title' => 'The Martian',
-        #     'author_name' => 'Andy Weir',
-        #     'author_age' => 48
-        #   }
-        # )
+        expect(response_body).to eq(
+          {
+            'id' => 8,
+            'title' => 'The Martian',
+            'author_name' => 'Andy Weir',
+            'author_age' => 48
+          }
+        )
       end
     end
   
@@ -112,7 +111,7 @@ RSpec.describe "Books", type: :request do
         # debugger
         expect {
           delete "/api/v1/books/#{book.id}"
-        }.to change { Book.count }.from(1).to(3)
+        }.to change { Book.count }.from(1).to(0)
   
         expect(response).to have_http_status(:no_content)
       end
